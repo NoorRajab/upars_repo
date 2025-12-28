@@ -4,7 +4,7 @@
 
 This directory contains the **Django REST Framework (DRF)** backend for the Umma University Points Allocation and Reward System (UPAS). The backend manages the core logic for the Point Allocation Algorithm, Tier Progression, and the Administrative Verification Algorithm (AVA).
 
-## 🏗 System Architecture
+##  System Architecture
 
 The backend is structured into two main components as per the project requirements:
 
@@ -13,7 +13,7 @@ The backend is structured into two main components as per the project requiremen
 
 ---
 
-## 🛠 Core Technical Features
+##  Core Technical Features
 
 ### 1. The Algorithm Engine (`api/signals.py`)
 
@@ -38,7 +38,7 @@ All point-earning activities are stored in a `PointTransaction` model. Points ar
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### Prerequisites
 
@@ -91,7 +91,7 @@ python manage.py runserver
 
 ---
 
-## 🔒 Security & Permissions
+##  Security & Permissions
 
 The backend enforces strict permission classes:
 
@@ -101,7 +101,7 @@ The backend enforces strict permission classes:
 
 ---
 
-## 🧪 Testing
+##  Testing
 
 To run the test suite (located in `api/tests.py`):
 
