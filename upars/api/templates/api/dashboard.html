@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head><title>UPAS Student Dashboard</title></head>
+<body>
+    <h1>Welcome, {{ profile.user.username }}</h1>
+    <div class="stats-box">
+        <h3>Current Tier: {{ profile.tier }}</h3>
+        <p>Total Points: {{ profile.total_points }}</p>
+    </div>
+
+    <h2>Global Leaderboard</h2>
+    <table>
+        <tr><th>Rank</th><th>Student</th><th>Points</th></tr>
+        {% for student in leaderboard %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ student.user.username }}</td>
+            <td>{{ student.total_points }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h2>Claimable Rewards</h2>
+    <ul>
+        {% for reward in rewards %}
+        <li>{{ reward.name }} - {{ reward.required_points }} Points ({{ reward.tier_required }} Tier)</li>
+        {% empty %}
+        <li>No rewards available yet. Keep earning points!</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
