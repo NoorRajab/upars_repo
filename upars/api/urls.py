@@ -1,11 +1,14 @@
 from django.urls import path, include
 from rest_framework.routers import DefaultRouter
-from .views import LeaderboardViewSet, student_dashboard
+from . import views
 
 router = DefaultRouter()
-router.register(r'leaderboard', LeaderboardViewSet, basename='leaderboard')
+router.register(r'profiles', views.UserProfileViewSet)
+router.register(r'transactions', views.PointTransactionViewSet)
 
 urlpatterns = [
-    path('dashboard/', student_dashboard, name='student_dashboard'), 
-    path('v1/', include(router.urls)), 
+    path('api/', include(router.urls)),
+    path('', views.dashboard, name='dashboard'),
+    path('leaderboard/', views.leaderboard_view, name='leaderboard'),
+    path('rewards/', views.rewards_catalog, name='rewards'),
 ]

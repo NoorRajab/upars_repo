@@ -1,32 +1,18 @@
-<!DOCTYPE html>
-<html>
-<head><title>UPAS Student Dashboard</title></head>
-<body>
-    <h1>Welcome, {{ profile.user.username }}</h1>
-    <div class="stats-box">
-        <h3>Current Tier: {{ profile.tier }}</h3>
-        <p>Total Points: {{ profile.total_points }}</p>
+{% extends 'api/base.html' %}
+{% block content %}
+<div class="card p-4 shadow-sm mb-4 border-0">
+    <h2>Welcome, {{ profile.user.username }}</h2>
+    <h1 class="display-3 text-primary">{{ profile.total_points }} Points</h1>
+    <span class="badge bg-warning text-dark fs-5">{{ profile.tier }} Tier</span>
+</div>
+
+<h4>Transaction History</h4>
+<div class="list-group">
+    {% for t in transactions %}
+    <div class="list-group-item d-flex justify-content-between">
+        <span>{{ t.description }} ({{ t.timestamp|date:"d M" }})</span>
+        <strong>{% if t.verified %}✅{% else %}⏳{% endif %} {{ t.points }}</strong>
     </div>
-
-    <h2>Global Leaderboard</h2>
-    <table>
-        <tr><th>Rank</th><th>Student</th><th>Points</th></tr>
-        {% for student in leaderboard %}
-        <tr>
-            <td>{{ forloop.counter }}</td>
-            <td>{{ student.user.username }}</td>
-            <td>{{ student.total_points }}</td>
-        </tr>
-        {% endfor %}
-    </table>
-
-    <h2>Claimable Rewards</h2>
-    <ul>
-        {% for reward in rewards %}
-        <li>{{ reward.name }} - {{ reward.required_points }} Points ({{ reward.tier_required }} Tier)</li>
-        {% empty %}
-        <li>No rewards available yet. Keep earning points!</li>
-        {% endfor %}
-    </ul>
-</body>
-</html>
+    {% endfor %}
+</div>
+{% endblock %}

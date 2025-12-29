@@ -1,13 +1,16 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
+from django.db.models import Sum
 from .models import PointTransaction, UserProfile
 
 @receiver(post_save, sender=PointTransaction)
 def update_tier_and_points(sender, instance, **kwargs):
-    if instance.is_verified:
-        profile = instance.user
+    if instance.verified:
+        profile = instance.user.profile
+        total = PointTransaction.objects.filter(
+            user=instance.user, verified=True
+        ).aggregate(Sum('points'))['points__sum'] or 0
         
-        total = sum(t.points_awarded for t in PointTransaction.objects.filter(user=profile, is_verified=True))
         profile.total_points = total
         
         

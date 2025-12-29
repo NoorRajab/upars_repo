@@ -1,17 +1,28 @@
 from rest_framework import serializers
-from .models import UserProfile, ActivityCategory, PointTransaction, RewardItem
+from .models import *
 
-class UserProfileSerializer(serializers.ModelSerializer):
+class CategorySerializer(serializers.ModelSerializer):
     class Meta:
-        model = UserProfile
+        model = ActivityCategory
         fields = '__all__'
 
-class PointTransactionSerializer(serializers.ModelSerializer):
+class TransactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = PointTransaction
         fields = '__all__'
 
-class RewardItemSerializer(serializers.ModelSerializer):
+class ProfileSerializer(serializers.ModelSerializer):
+    username = serializers.CharField(source='user.username', read_only=True)
+    class Meta:
+        model = UserProfile
+        fields = ['username', 'student_id', 'total_points', 'tier']
+
+class RewardSerializer(serializers.ModelSerializer):
     class Meta:
         model = RewardItem
+        fields = '__all__'
+
+class RedemptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Redemption
         fields = '__all__'
