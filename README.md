@@ -1,119 +1,131 @@
 
 
-# UPAS Backend - Points Allocation and Reward System
+# UPAS: Umma University Point Allocation System
 
-This directory contains the **Django REST Framework (DRF)** backend for the Umma University Points Allocation and Reward System (UPAS). The backend manages the core logic for the Point Allocation Algorithm, Tier Progression, and the Administrative Verification Algorithm (AVA).
+**Developer:** Noor Rajab
 
-##  System Architecture
+**Institution:** Umma University – School of Business and Technology
 
-The backend is structured into two main components as per the project requirements:
-
-* **`upars/`**: Project configuration, settings, and root URL routing.
-* **`api/`**: The core application logic containing models, serializers, signals (for algorithms), and ViewSets.
+**Project Type:** Information System for Academic & Extracurricular Meritocracy
 
 ---
 
-##  Core Technical Features
+##  Project Overview
 
-### 1. The Algorithm Engine (`api/signals.py`)
+UPAS is a gamified information system designed to combat low student morale and a "dismal campus culture" at Umma University. By rewarding academic excellence, leadership, and community engagement with a points-based system, UPAS fosters a competitive yet rewarding environment.
 
-The backend utilizes Django Signals to maintain an **Immediate Feedback Loop**.
+### Key Features
 
-* **Point Allocation**: Calculates student merit based on category-specific weighting constants.
-* **Tier Allocation**: Automatically updates student status between **Bronze, Silver, Gold, and Platinum** based on point thresholds (e.g., Platinum  3001 points).
+* **Tiered Meritocracy:** Students progress through four tiers: **Bronze, Silver, Gold, and Platinum**.
+* **Automated Logic:** Real-time point calculation and tier upgrades using Django Signals.
+* **Admin Verification:** A secure workflow where staff verify activities before points are finalized.
+* **RESTful API:** Full integration capability for mobile or external web apps.
+* **Leaderboard:** Real-time global rankings to encourage healthy competition.
+* **Reward Catalog:** A system for students to redeem points for virtual or physical university rewards.
 
-### 2. Administrative Verification Algorithm (AVA)
+---
 
-All point-earning activities are stored in a `PointTransaction` model. Points are only credited to the student's profile once the `is_verified` boolean is set to `True` by an authorized administrator.
+##  Tech Stack
 
-### 3. API Endpoints
+* **Backend:** Python 3.x, Django 5.x
+* **API Framework:** Django REST Framework (DRF)
+* **Database:** SQLite (Development)
+* **Frontend:** HTML5, Bootstrap 5 (Responsive Design)
+* **Authentication:** Token-based and Session-based security
 
-| Endpoint | ViewSet | Purpose |
+---
+
+##  The Algorithm: Tiers & Thresholds
+
+The system automatically updates a student's status based on their **total verified points**:
+
+| Tier | Point Range | Status |
 | --- | --- | --- |
-| `/api/auth-token/` | `obtain_auth_token` | Secure Token-based login. |
-| `/api/profiles/` | `UserProfileViewSet` | Student profile and current tier status. |
-| `/api/transactions/` | `PointTransactionViewSet` | Point awarding and history. |
-| `/api/leaderboard/` | `LeaderboardViewSet` | Top 10 rankings by total points. |
-| `/api/rewards/` | `RewardItemViewSet` | Catalog of items available for redemption. |
+| **Bronze** | 0 - 1,000 | Entry Level |
+| **Silver** | 1,001 - 2,000 | Active Participant |
+| **Gold** | 2,001 - 3,000 | Campus Leader |
+| **Platinum** | 3,001+ | Excellence Exemplified |
+
+---
+
+##  Project Structure
+
+```text
+upars/
+├── upars/              # Main Project Settings (settings.py, urls.py)
+├── api/                # Application Logic
+│   ├── models.py       # UserProfile, Points, Rewards, Redemption
+│   ├── signals.py      # Automated Tier Update Logic
+│   ├── serializers.py  # DRF Serializers
+│   ├── views.py        # API ViewSets & Template Views
+│   └── templates/      # HTML User Interface
+├── manage.py           # Django CLI
+└── db.sqlite3          # Database
+
+```
 
 ---
 
 ##  Getting Started
 
-### Prerequisites
+### 1. Prerequisites
 
-* Python 3.10+
-* MySQL Server (XAMPP/WAMP or Standalone)
-* Virtual Environment (Recommended)
+Ensure you have Python installed.
 
-### Installation
+### 2. Installation & Setup
 
-1. **Clone the repository**:
 ```bash
-git clone https://github.com/NoorRajab/upars_repo.git
-cd upars_repo
+# Clone the repository
+git clone <repository-url>
+cd upars
 
-```
-
-
-2. **Setup Virtual Environment**:
-```bash
+# Create and activate a virtual environment
 python -m venv venv
-source venv/bin/activate  # Windows: venv\Scripts\activate
+source venv/bin/activate  # On Windows: venv\Scripts\activate
+
+# Install dependencies
+pip install django djangorestframework
 
 ```
 
+### 3. Database Initialization
 
-3. **Install Dependencies**:
 ```bash
-pip install django djangorestframework django-cors-headers mysqlclient
-
-```
-
-
-4. **Database Configuration**:
-Create a database named `upas_db` in your MySQL server. Update the `DATABASES` setting in `upars/settings.py` if your local credentials differ from the default.
-5. **Run Migrations**:
-```bash
-python manage.py makemigrations
+python manage.py makemigrations api
 python manage.py migrate
 
 ```
 
+### 4. Create an Administrator
 
-6. **Start the Development Server**:
+```bash
+python manage.py createsuperuser
+
+```
+
+### 5. Run the Project
+
 ```bash
 python manage.py runserver
 
 ```
 
-
-
----
-
-##  Security & Permissions
-
-The backend enforces strict permission classes:
-
-* **`IsAuthenticated`**: Required for all students to view their own data and rewards.
-* **`IsStaffOrAdmin`**: Custom permission required for creating `ActivityCategories` and verifying `PointTransactions`.
-* **CORS**: Configured in `settings.py` to allow secure communication with the desktop/web frontend.
+Visit the application at: `http://127.0.0.1:8000/`
 
 ---
 
-##  Testing
+##  API Endpoints (Quick Reference)
 
-To run the test suite (located in `api/tests.py`):
-
-```bash
-python manage.py test api
-
-```
+| Endpoint | Method | Purpose |
+| --- | --- | --- |
+| `/api/auth-token/` | POST | Get Token for API access |
+| `/api/profiles/` | GET | View current student tier and points |
+| `/api/leaderboard/` | GET | View top 10 ranked students |
+| `/api/transactions/` | POST | Admins submit points for a student |
+| `/api/redeem/` | POST | Students claim a reward item |
 
 ---
 
-**Developed by:** Ahmed Noor Rajab
 
-**Affiliation:** Umma University - Faculty of Information Technology
 
-**Date:** November 2025
+**© 2025 Ahmed Noor Rajab**
